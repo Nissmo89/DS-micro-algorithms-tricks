@@ -52,8 +52,6 @@ pub fn reverse_linked_list_recursive(head: Option<Box<ListNode>>) -> Option<Box<
                     }
                     current_in_reversed = curr.next.as_mut();
                 }
-                // If rest_reversed was None (shouldn't happen if node.next was Some),
-                // this logic needs careful handling. But base case ensures.
                 return rest_reversed;
             }
         }
@@ -76,7 +74,7 @@ mod tests {
     }
 
     // Helper to convert a linked list to a vector
-    fn list_to_vec(mut head: Option<Box<ListNode>>) -> Vec<i32> {
+    fn list_to_vec(mut head: Option<Box<ListNode>>) -> Vec<i32>> {
         let mut vec = Vec::new();
         while let Some(node) = head {
             vec.push(node.val);
