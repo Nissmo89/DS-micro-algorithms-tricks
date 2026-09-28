@@ -1,36 +1,33 @@
 package main
 
 import (
-    "container/list"
     "fmt"
 )
 
-// slidingWindowMax returns the maximum for each window of size k in arr.
-func slidingWindowMax(arr []int, k int) []int {
-    if k <= 0 {
+func maxSlidingWindow(nums []int, k int) []int {
+    if len(nums) == 0 || k <= 0 {
         return []int{}
     }
-    res := make([]int, 0, len(arr)-k+1)
-    dq := list.New() // store indices
-    for i, v := range arr {
-        // Remove indices out of current window
-        for dq.Len() > 0 && dq.Front().Value.(int) <= i-k {
-            dq.Remove(dq.Front())
+    n := len(nums)
+    res := make([]int, 0, n-k+1)
+    deque := make([]int, 0)
+    for i := 0; i < n; i++ {
+        if len(deque) > 0 && deque[0] <= i-k {
+            deque = deque[1:]
         }
-        // Remove smaller values from the back
-        for dq.Len() > 0 && arr[dq.Back().Value.(int)] <= v {
-            dq.Remove(dq.Back())
+        for len(deque) > 0 && nums[deque[len(deque)-1]] <= nums[i] {
+            deque = deque[:len(deque)-1]
         }
-        dq.PushBack(i)
+        deque = append(deque, i)
         if i >= k-1 {
-            res = append(res, arr[dq.Front().Value.(int)])
+            res = append(res, nums[deque[0]])
         }
     }
     return res
 }
 
 func main() {
-    arr := []int{1, 3, -1, -3, 5, 3, 6, 7}
+    nums := []int{1, 3, -1, -3, 5, 3, 6, 7}
     k := 3
-    fmt.Println("Sliding window maximum:", slidingWindowMax(arr, k))
+    fmt.Println(maxSlidingWindow(nums, k))
 }
